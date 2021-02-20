@@ -69,12 +69,11 @@ class RestAPI(
 
         val friendId = dto.friendId
                 ?: return RestResponseFactory.userFailure("Missing friendId")
-        val user1 = userService.findIdByEager(userId)
-        val user2 = userService.findIdByEager(friendId)
+        val status = dto.status
 
         if (dto.command == Command.ADD_FRIENDSHIP) {
             try {
-                userService.addFriendship(user1!!, user2!!, friendId, 1)
+                userService.acceptFriendship(userId, friendId, status)
             } catch (e: IllegalArgumentException) {
                 return RestResponseFactory.userFailure(e.message ?: "Failed to return friendship $friendId")
             }

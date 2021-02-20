@@ -5,8 +5,8 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 
 package no.enterprise2.contexam.usercollections.dto
 
-import io.swagger.annotations.Api
 import io.swagger.annotations.ApiModelProperty
+import no.enterprise2.contexam.usercollections.db.User
 
 enum class Command {
 
@@ -25,15 +25,15 @@ data class PatchUserDto(
         @get:ApiModelProperty("Command to execute on a user's collection")
         var command: Command? = null,
 
-        @get:ApiModelProperty("firstName of the user")
-        var firstName: String? = null,
+        @get:ApiModelProperty("Sender of friend request.")
+        var user1: User? = null,
 
-        @get:ApiModelProperty("lastname of the user")
-        var lastName: String? = null,
+        @get:ApiModelProperty("Receiver of friend request.")
+        var user2: User? = null,
 
-        @get:ApiModelProperty("id of the friend")
+        @get:ApiModelProperty("Friend ID to find and add to friend list")
         var friendId: String? = null,
 
-        @get:ApiModelProperty("email of the user")
-        var email: String? = null
+        @get:ApiModelProperty("Accept or Decline friend request")
+        var status: Int = 1
 )

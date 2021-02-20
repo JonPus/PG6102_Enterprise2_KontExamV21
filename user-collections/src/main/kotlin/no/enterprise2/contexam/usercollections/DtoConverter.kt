@@ -6,7 +6,9 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 
 package no.enterprise2.contexam.usercollections
 
+import no.enterprise2.contexam.usercollections.db.Friendship
 import no.enterprise2.contexam.usercollections.db.User
+import no.enterprise2.contexam.usercollections.dto.FriendshipDto
 import no.enterprise2.contexam.usercollections.dto.UserDto
 
 object DtoConverter {
@@ -18,7 +20,16 @@ object DtoConverter {
             firstName = user.firstName
             lastName = user.lastName
             email = user.email
+            friendList = user.friendList.map { transform(it) }.toMutableList()
 
+        }
+    }
+
+    fun transform(friendship: Friendship): FriendshipDto {
+        return FriendshipDto().apply {
+            friendId = friendship.friendId
+            numberOfFriendship = friendship.numberOfFriendship
+            status = friendship.status
         }
     }
 }

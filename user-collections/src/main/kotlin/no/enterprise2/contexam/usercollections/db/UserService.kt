@@ -60,6 +60,15 @@ class UserService(
         }
     }
 
+    fun acceptFriendship(userId: String, friendId: String, status: Int) {
+        validateUser(userId)
+
+        val sender = userRepository.lockedFind(userId)
+        val friend = userRepository.lockedFind(friendId)
+
+        addFriendship(sender!!, friend!!, friendId, status)
+    }
+
     fun addFriendship(user1: User, user2: User, friendId: String, status: Int) {
 
         if (status == 1) {
@@ -73,14 +82,6 @@ class UserService(
                         this.numberOfFriendship = 1
                     }.also {
                         user1.friendList.add(it)
-                    }
-            user2.friendList.find { it.friendId == friendId }
-                    ?.apply { numberOfFriendship++ }
-                    ?: Friendship().apply {
-                        this.friendId = friendId
-                        this.user1 = user2
-                        this.user2 = user1
-                        this.numberOfFriendship = 1
                     }.also {
                         user2.friendList.add(it)
                     }

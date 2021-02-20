@@ -9,8 +9,8 @@ import io.swagger.annotations.ApiModelProperty
 
 data class FriendshipDto(
 
-        @get:ApiModelProperty("Id of the post")
-        var postId: String? = null,
+        @get:ApiModelProperty("Id of the friend")
+        var friendId: String? = null,
 
         @get:ApiModelProperty("Number of friendships that the user have")
         var numberOfFriendship: Int? = null,
