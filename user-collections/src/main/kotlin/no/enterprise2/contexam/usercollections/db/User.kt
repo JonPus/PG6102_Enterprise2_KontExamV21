@@ -6,7 +6,7 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 package no.enterprise2.contexam.usercollections.db
 
 import javax.persistence.*
-import javax.validation.constraints.Min
+import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
 @Entity
@@ -15,14 +15,19 @@ class User(
 
         @get:Id
         @get:NotBlank
-        var userId: String? = null
+        var userId: String? = null,
 
-        /*@get:Min(0)
-        var person: Int = 0,
+        @get:NotBlank
+        var firstName: String? = null,
 
-        @get:Min(0)
-        var coins: Int = 0,
+        @get:NotBlank
+        var lastName: String? = null,
 
-        @get:OneToMany(mappedBy = "user", cascade = [(CascadeType.ALL)])
-        var bookedTrips: MutableList<Booking> = mutableListOf()*/
+        @get:NotBlank
+        @get:Email
+        var email: String? = null,
+
+        @get:OneToMany(mappedBy = "user1", cascade = [(CascadeType.ALL)])
+        var friendList: MutableList<Friendship> = mutableListOf()
+
 )

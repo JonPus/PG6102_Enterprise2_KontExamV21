@@ -10,14 +10,17 @@ import io.swagger.annotations.ApiModelProperty
 data class UserDto(
 
         @get:ApiModelProperty("The id of the user")
-        var userId: String? = null
+        var userId: String? = null,
 
-        /*@get:ApiModelProperty("Number of person booked on this trip")
-        var person: Int? = null,
+        @get:ApiModelProperty("first name of the user")
+        var firstName: String? = null,
 
-        @get:ApiModelProperty("The amount of coins owned by the user for buying and selling tickets")
-        var coins: Int? = null,
+        @get:ApiModelProperty("last name of the user")
+        var lastName: String? = null,
 
-        @get:ApiModelProperty("List of bookings owned by the user")
-        var bookedTrips: MutableList<BookingDto> = mutableListOf()*/
+        @get:ApiModelProperty("email of the user")
+        var email: String? = null,
+
+        @get:ApiModelProperty("List of friendships connected by the user")
+        var friendList: MutableList<FriendshipDto> = mutableListOf()
 )

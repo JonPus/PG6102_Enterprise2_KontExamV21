@@ -5,34 +5,35 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 
 package no.enterprise2.contexam.usercollections.dto
 
+import io.swagger.annotations.Api
 import io.swagger.annotations.ApiModelProperty
 
 enum class Command {
 
-    ALTER_PERSON,
+    ALTER_USER,
 
-    RETURN_BOOKING,
+    RETURN_FRIENDSHIP,
 
-    BUY_BOOKING,
+    ADD_FRIENDSHIP,
 
-    CANCEL_BOOKING
+    DELETE_FRIENDSHIP
 
 }
 
 data class PatchUserDto(
 
         @get:ApiModelProperty("Command to execute on a user's collection")
-        var command: Command? = null
+        var command: Command? = null,
 
-        /*@get:ApiModelProperty("Id of the trip")
-        var tripId: String? = null,
+        @get:ApiModelProperty("firstName of the user")
+        var firstName: String? = null,
 
-        @get:ApiModelProperty("The place")
-        var place: String? = null,
+        @get:ApiModelProperty("lastname of the user")
+        var lastName: String? = null,
 
-        @get:ApiModelProperty("The amount of person for the booking a trip")
-        var person: Int = 0,
+        @get:ApiModelProperty("id of the friend")
+        var friendId: String? = null,
 
-        @get:ApiModelProperty("The default status of the booking")
-        var isActive: Int = 1*/
+        @get:ApiModelProperty("email of the user")
+        var email: String? = null
 )

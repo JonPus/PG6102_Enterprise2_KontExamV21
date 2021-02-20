@@ -1,7 +1,13 @@
+/*
+*
+* This ahs been taken from Andrea Arcuri's Repository page:
+* https://github.com/arcuri82/testing_security_development_enterprise_systems/blob/master/advanced/rest/rest-exception/src/main/kotlin/org/tsdes/advanced/rest/exception/RestResponseEntityExceptionHandler.kt
+**/
+
 package no.enterprise2.contexam.rest.exception
 
 import com.google.common.base.Throwables
-import no.enterprise2.exam.rest.dto.WrappedResponse
+import no.enterprise2.contexam.rest.dto.WrappedResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

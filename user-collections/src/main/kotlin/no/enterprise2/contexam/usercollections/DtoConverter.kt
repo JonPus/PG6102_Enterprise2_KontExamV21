@@ -15,8 +15,10 @@ object DtoConverter {
 
         return UserDto().apply {
             userId = user.userId
-            /*coins = user.coins
-            bookedTrips = user.bookedTrips.map { transform(it) }.toMutableList()*/
+            firstName = user.firstName
+            lastName = user.lastName
+            email = user.email
+
         }
     }
 }

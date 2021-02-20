@@ -1,8 +1,8 @@
 package no.enterprise2.contexam.auth
 
 import no.enterprise2.contexam.auth.db.UserService
-import no.enterprise2.exam.rest.dto.RestResponseFactory
-import no.enterprise2.exam.rest.dto.WrappedResponse
+import no.enterprise2.contexam.rest.dto.RestResponseFactory
+import no.enterprise2.contexam.rest.dto.WrappedResponse
 import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.http.MediaType

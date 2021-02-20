@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  /*
 This is from Andrea Arcuri's repository with modifcation:
 https://github.com/arcuri82/testing_security_development_enterprise_systems/blob/master/advanced/exercise-solutions/card-game/part-10/user-collections/pom.xml
 */
-
  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -16,9 +14,9 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
     <modules>
         <module>api-gateway</module>
         <module>auth</module>
+        <module>user-collections</module>
         <module>rest-dto</module>
         <module>rest-exception</module>
-        <module>user-collections</module>
     </modules>
 
     <groupId>no.enterprise2.contexam</groupId>

@@ -22,7 +22,7 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import java.time.Duration
 
-@SpringBootApplication(scanBasePackages = ["no.enterprise2.exam"])
+@SpringBootApplication(scanBasePackages = ["no.enterprise2.contexam"])
 class Application {
 
     @LoadBalanced
@@ -69,7 +69,7 @@ class Application {
     private fun apiInfo(): ApiInfo {
         return ApiInfoBuilder()
                 .title("API for User-Collections")
-                .description("REST service to handle the booked trips by the user")
+                .description("REST service to handle the friendships by users in the social site")
                 .version("1.0")
                 .build()
     }
