@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
 import javax.persistence.LockModeType
 
 @Repository
@@ -91,18 +90,22 @@ class UserService(
         }
     }
 
-    fun deleteFriendship(userId: String, friendId: String) {
+    fun deleteFriendship(userId: String, friendId: String): Boolean {
         validateUser(userId)
 
         val user = userRepository.lockedFind(userId)!!
 
         val friendship = user.friendList.find { it.friendId == friendId }
 
+        println(friendship)
+
         if (friendship == null || friendship.numberOfFriendship == 0) {
             throw IllegalArgumentException("User $userId does not have friends $friendId. :(")
         }
 
         friendship.numberOfFriendship--
+
+        return true
     }
 }
 
