@@ -17,6 +17,8 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
         <module>user-collections</module>
         <module>rest-dto</module>
         <module>rest-exception</module>
+        <module>messages</module>
+        <module>messages-dto</module>
     </modules>
 
     <groupId>no.enterprise2.contexam</groupId>

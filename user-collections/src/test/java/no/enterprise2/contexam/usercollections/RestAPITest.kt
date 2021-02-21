@@ -193,6 +193,4 @@ class RestAPITest {
 
         assertTrue(user.friendList.any { it.friendId == userId2 })
     }
-
-
 }
