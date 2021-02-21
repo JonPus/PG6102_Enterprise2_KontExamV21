@@ -33,7 +33,7 @@ internal class MessageServiceTest {
     fun testCreateMessage() {
         val n = repository.count()
 
-        service.createNewMessage("m001", "Do you forgive me?", "u001", "f001")
+        service.createNewMessage("m001", "Do you forgive me?", "u001", "f001", 1)
         assertEquals(n + 1, repository.count())
     }
 
@@ -43,7 +43,7 @@ internal class MessageServiceTest {
         val n = repository.count()
         val id = "m0012"
 
-        service.createNewMessage(id, "What is love?", "u001", "u002")
+        service.createNewMessage(id, "What is love?", "u001", "u002", 2)
 
         assertEquals(n + 1, repository.count())
 
@@ -59,7 +59,7 @@ internal class MessageServiceTest {
         val page = service.getNextTimeline(n)
 
         for (i in 0 until n - 1) {
-            assertTrue(page[i].friendId!! >= page[i + 1].friendId!!)
+            assertTrue(page[i].uniqueNumber!! >= page[i + 1].uniqueNumber!!)
         }
 
     }

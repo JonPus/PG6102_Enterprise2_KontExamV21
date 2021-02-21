@@ -5,6 +5,7 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 
 package no.enterprise2.contexam.messages.dto
 
+import io.swagger.annotations.Api
 import io.swagger.annotations.ApiModelProperty
 
 data class MessageDto(
@@ -20,6 +21,9 @@ data class MessageDto(
 
         @get:ApiModelProperty("the receiver of the message Id")
         var friendId: String? = null,
+
+        @get:ApiModelProperty("Unique number for sorting message")
+        var uniqueNumber: Int? = null,
 
         @get:ApiModelProperty("The class of the message to determine where it should go to the timeline or private inbox of user.")
         var messageClass: MessageClass? = null

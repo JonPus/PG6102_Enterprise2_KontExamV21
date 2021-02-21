@@ -93,7 +93,7 @@ class RestAPI(
         val messageId = dto.messageId
                 ?: return RestResponseFactory.userFailure("Missing messageId")
 
-        val ok = messageService.createNewMessage(messageId, dto.message!!, dto.userId!!, dto.friendId!!)
+        val ok = messageService.createNewMessage(messageId, dto.message, dto.userId, dto.friendId, dto.uniqueNumber)
 
         val message = messageRepository.findById(dto.messageId!!).orElse(null)
 
@@ -102,6 +102,24 @@ class RestAPI(
         } else {
             template.convertAndSend(fanout.name, "", dto.messageId!!)
             RestResponseFactory.payload(201, DtoConverter.transform(message))
+        }
+    }
+
+    @ApiOperation("Post method for creating messages")
+    @PostMapping(path = ["/{messageId}"])
+    fun createTrip2(
+            @PathVariable("messageId") messageId: String, message: String?, userId: String?, friendId: String?, uniqueNumber: Int?
+    ): ResponseEntity<WrappedResponse<MessageDto>> {
+
+        val ok = messageService.createNewMessage(messageId, message, userId, friendId, uniqueNumber)
+
+        val createdMessage = messageRepository.findById(messageId).orElse(null)
+
+        return if (!ok) {
+            RestResponseFactory.userFailure("Message $messageId already exists")
+        } else {
+            template.convertAndSend(fanout.name, "", messageId)
+            RestResponseFactory.payload(201, DtoConverter.transform(createdMessage))
         }
     }
 
@@ -124,21 +142,21 @@ class RestAPI(
             @RequestParam("keySetId", required = false)
             keySetId: String?,
             //
-            @ApiParam("FriendId per messages in the prevous page")
-            @RequestParam("keySetShow", required = false)
-            keySetShow: Int?
+            @ApiParam("UniqueNumber per messages in the previous page")
+            @RequestParam("keySetMessage", required = false)
+            keySetMessage: Int?
     ): ResponseEntity<WrappedResponse<PageDto<MessageDto>>> {
 
         val page = PageDto<MessageDto>()
 
         val n = 10
 
-        val shows = DtoConverter.transform(messageService.getNextTimeline(n, keySetId, keySetShow))
-        page.list = shows
+        val messages = DtoConverter.transform(messageService.getNextTimeline(n, keySetId, keySetMessage))
+        page.list = messages
 
-        if (shows.size == n) {
-            val last = shows.last()
-            page.next = "/api/messages?keySetId=${last.messageId}&keySetShow=${last.friendId}"
+        if (messages.size == n) {
+            val last = messages.last()
+            page.next = "/api/messages?keySetId=${last.messageId}&keySetMessage=${last.uniqueNumber}"
         }
 
         return ResponseEntity

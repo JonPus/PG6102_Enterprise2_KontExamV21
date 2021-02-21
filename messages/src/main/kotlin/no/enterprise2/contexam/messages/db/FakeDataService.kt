@@ -33,7 +33,8 @@ class FakeDataService(
                 messageId,
                 faker.chuckNorris().fact(),
                 faker.name().firstName(),
-                faker.name().firstName()
+                faker.name().lastName(),
+                faker.number().numberBetween(1, 1000)
         )
         repository.save(details)
     }

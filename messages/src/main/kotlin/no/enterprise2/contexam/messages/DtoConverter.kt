@@ -13,7 +13,7 @@ object DtoConverter {
 
     fun transform(transformMessage: Message): MessageDto =
 
-            transformMessage.run { MessageDto(messageId, message, userId, friendId) }
+            transformMessage.run { MessageDto(messageId, message, userId, friendId, uniqueNumber) }
 
     fun transform(messages: Iterable<Message>): List<MessageDto> = messages.map { transform(it) }
 

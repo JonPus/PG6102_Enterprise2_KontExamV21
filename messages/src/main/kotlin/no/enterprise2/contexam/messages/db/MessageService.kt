@@ -18,13 +18,13 @@ class MessageService(
         val em: EntityManager
 ) {
 
-    fun createNewMessage(messageId: String, message: String, userId: String, friendId: String): Boolean {
+    fun createNewMessage(messageId: String, message: String?, userId: String?, friendId: String?, uniqueNumber: Int?): Boolean {
 
         if (messageRepository.existsById(messageId)) {
             return false
         }
 
-        val newMessage = Message(messageId, message, userId, friendId)
+        val newMessage = Message(messageId, message, userId, friendId, uniqueNumber)
 
         messageRepository.save(newMessage)
         return true
@@ -48,12 +48,11 @@ class MessageService(
         if (keySetId == null) {
 
             query = em.createQuery(
-                    "SELECT m FROM Message m ORDER BY m.friendId DESC, m.userId DESC",
-                    Message::class.java
+                    "SELECT m FROM Message m ORDER BY m.uniqueNumber DESC, m.message DESC", Message::class.java
             )
         } else {
             query = em.createQuery(
-                    "SELECT m FROM Message m WHERE m.friendId <? 2 OR (m.friendId =? 2 AND m.messageId <? 1) ORDER BY m.friendId DESC, m.messageId DESC",
+                    "SELECT m FROM Message m WHERE m.uniqueNumber <? 2 OR (m.uniqueNumber =? 2 AND m.messageId <? 1) ORDER BY m.uniqueNumber DESC, m.messageId DESC",
                     Message::class.java
             )
             query.setParameter(1, keySetId)
@@ -62,7 +61,6 @@ class MessageService(
         query.maxResults = size
 
         return query.resultList
-
     }
 
 }

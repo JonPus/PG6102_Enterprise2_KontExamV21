@@ -19,8 +19,8 @@ class MOMListener(
     }
 
     @RabbitListener(queues = ["#{queue.name}"])
-    fun receiveFromAMQP(messageId: String, message: String, userId: String, friendId: String) {
-        val ok = messageService.createNewMessage(messageId, message, userId, friendId)
+    fun receiveFromAMQP(messageId: String, message: String, userId: String, friendId: String, uniqueNumber: Int) {
+        val ok = messageService.createNewMessage(messageId, message, userId, friendId, uniqueNumber)
         if (ok) {
             log.info("Created a new message to friend via MOM: $messageId")
         }

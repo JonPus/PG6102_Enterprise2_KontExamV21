@@ -3,6 +3,7 @@ package no.enterprise2.contexam.messages.db
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
 @Entity
 class Message(
@@ -17,6 +18,11 @@ class Message(
         var userId: String? = null,
 
         @get:NotBlank
-        var friendId: String? = null
+        var friendId: String? = null,
+
+        @get:NotNull
+        var uniqueNumber: Int? = null
+
+
 
 )
