@@ -1,6 +1,7 @@
 package no.enterprise2.contexam.usercollections.db
 
 
+import no.enterprise2.contexam.messages.dto.MessageDto
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -33,6 +34,8 @@ class Friendship(
 
         @get:Max(1)
         var status: Int = 1
+
+
 )
 
 

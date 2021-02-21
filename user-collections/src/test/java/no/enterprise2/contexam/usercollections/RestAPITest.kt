@@ -6,32 +6,45 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 
 package no.enterprise2.contexam.usercollections
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.common.ConsoleNotifier
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
+import no.enterprise2.contexam.rest.dto.WrappedResponse
 import no.enterprise2.contexam.usercollections.db.UserRepository
 import no.enterprise2.contexam.usercollections.db.UserService
 import no.enterprise2.contexam.usercollections.dto.Command
 import no.enterprise2.contexam.usercollections.dto.PatchUserDto
-import org.junit.jupiter.api.Assertions
+import org.awaitility.Awaitility
+import org.hamcrest.CoreMatchers
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.context.ApplicationContextInitializer
+import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.testcontainers.containers.GenericContainer
+import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-//@ContextConfiguration(initializers = [(RestAPITest.Companion.Initializer::class)])
+@ContextConfiguration(initializers = [(RestAPITest.Companion.Initializer::class)])
 class RestAPITest {
 
     @LocalServerPort
@@ -50,7 +63,7 @@ class RestAPITest {
     private lateinit var fanout: FanoutExchange
 
 
-    /*companion object {
+    companion object {
 
         private lateinit var wiremockServer: WireMockServer
 
@@ -75,7 +88,7 @@ class RestAPITest {
             val json = ObjectMapper().writeValueAsString(dto)
 
             wiremockServer.stubFor(
-                    WireMock.get(WireMock.urlMatching("/api/trips/collection_.*"))
+                    WireMock.get(WireMock.urlMatching("/api/messages/collection_.*"))
                             .willReturn(
                                     WireMock.aResponse()
                                             .withStatus(200)
@@ -103,7 +116,7 @@ class RestAPITest {
                         .applyTo(configurableApplicationContext.environment)
             }
         }
-    }*/
+    }
 
     @PostConstruct
     fun init() {
@@ -193,4 +206,31 @@ class RestAPITest {
 
         assertTrue(user.friendList.any { it.friendId == userId2 })
     }
+
+    @Test
+    fun testReceive() {
+
+        val n = RestAssured.given()
+                .get("/rabbit")
+                .then()
+                .statusCode(200)
+                .extract().body().`as`(Int::class.java)
+
+        val msg = "foo"
+
+        template.convertAndSend(fanout.name, "", msg)
+
+        Awaitility.await().atMost(3, TimeUnit.SECONDS)
+                .ignoreExceptions()
+                .until {
+                    RestAssured.given()
+                            .port(port)
+                            .get("/rabbit")
+                            .then()
+                            .statusCode(200)
+                            .body(CoreMatchers.equalTo("${n}"))
+                    true
+                }
+    }
+
 }

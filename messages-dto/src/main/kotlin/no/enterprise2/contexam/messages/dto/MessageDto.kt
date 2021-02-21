@@ -5,7 +5,6 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 
 package no.enterprise2.contexam.messages.dto
 
-import io.swagger.annotations.Api
 import io.swagger.annotations.ApiModelProperty
 
 data class MessageDto(

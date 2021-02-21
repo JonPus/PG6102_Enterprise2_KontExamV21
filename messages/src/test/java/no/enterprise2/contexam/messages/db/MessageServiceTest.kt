@@ -61,7 +61,5 @@ internal class MessageServiceTest {
         for (i in 0 until n - 1) {
             assertTrue(page[i].uniqueNumber!! >= page[i + 1].uniqueNumber!!)
         }
-
     }
-
 }

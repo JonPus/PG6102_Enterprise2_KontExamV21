@@ -29,5 +29,4 @@ class User(
 
         @get:OneToMany(mappedBy = "user1", cascade = [(CascadeType.ALL)])
         var friendList: MutableList<Friendship> = mutableListOf()
-
 )

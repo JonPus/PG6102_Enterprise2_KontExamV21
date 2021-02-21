@@ -14,6 +14,7 @@ import no.enterprise2.contexam.usercollections.dto.Command
 import no.enterprise2.contexam.usercollections.dto.PatchResultDto
 import no.enterprise2.contexam.usercollections.dto.PatchUserDto
 import no.enterprise2.contexam.usercollections.dto.UserDto
+import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -81,4 +82,18 @@ class RestAPI(
         }
         return RestResponseFactory.userFailure("Unrecognized command: ${dto.command}")
     }
+
+    @RabbitListener(queues = ["#{queue.name}"])
+    fun receiveFromAMQP(msg: String) {
+        print(msg)
+    }
+
+    @GetMapping(path = ["/rabbit"])
+    fun getRabbit(): ResponseEntity<Int> {
+
+        val rabbit = 10
+
+        return ResponseEntity.ok(rabbit)
+    }
+
 }

@@ -28,4 +28,4 @@ spring:
       discovery:
         instanceId: ${spring.application.name}:${random.value}
 
-#tripServiceAddress: "trips-service:8080"
+messageServiceAddress: "messages-service:8080"
