@@ -6,6 +6,7 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 package no.enterprise2.contexam.usercollections.dto
 
 import io.swagger.annotations.ApiModelProperty
+import no.enterprise2.contexam.messages.dto.MessageDto
 
 data class UserDto(
 
@@ -23,4 +24,5 @@ data class UserDto(
 
         @get:ApiModelProperty("List of friendships connected by the user")
         var friendList: MutableList<FriendshipDto> = mutableListOf()
+
 )

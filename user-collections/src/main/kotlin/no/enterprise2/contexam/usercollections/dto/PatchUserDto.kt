@@ -6,7 +6,9 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 package no.enterprise2.contexam.usercollections.dto
 
 import io.swagger.annotations.ApiModelProperty
+import no.enterprise2.contexam.usercollections.db.Friendship
 import no.enterprise2.contexam.usercollections.db.User
+import no.enterprise2.contexam.usercollections.model.Message
 
 enum class Command {
 
@@ -35,5 +37,9 @@ data class PatchUserDto(
         var friendId: String? = null,
 
         @get:ApiModelProperty("Accept or Decline friend request")
-        var status: Int = 1
+        var status: Int = 1,
+
+        @get:ApiModelProperty("List of friendships")
+        var friendList: MutableList<Friendship> = mutableListOf()
+
 )

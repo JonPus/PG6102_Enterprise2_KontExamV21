@@ -10,11 +10,23 @@ import no.enterprise2.contexam.messages.dto.MessageDto
 
 data class Message(
 
-        var messageId: String
+        var messageId: String,
+
+        var message: String,
+
+        var userId: String,
+
+        var friendId: String,
+
+        var uniqueNumber: Int
 ) {
 
     constructor(dto: MessageDto) : this(
 
-            dto.messageId ?: throw IllegalArgumentException("null messageId")
+            dto.messageId ?: throw IllegalArgumentException("null messageId"),
+            dto.message ?: throw IllegalArgumentException("null message"),
+            dto.userId ?: throw IllegalArgumentException("null userId"),
+            dto.friendId ?: throw IllegalArgumentException("null friendId"),
+            dto.uniqueNumber ?: throw IllegalArgumentException("null unique number")
     )
 }

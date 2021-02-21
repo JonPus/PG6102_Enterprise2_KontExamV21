@@ -5,6 +5,7 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 
 package no.enterprise2.contexam.usercollections.db
 
+import no.enterprise2.contexam.usercollections.model.Message
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank

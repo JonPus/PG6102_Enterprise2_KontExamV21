@@ -5,6 +5,8 @@ https://github.com/arcuri82/testing_security_development_enterprise_systems/blob
 
 package no.enterprise2.contexam.usercollections.db
 
+import no.enterprise2.contexam.usercollections.MessageService
+import no.enterprise2.contexam.usercollections.model.Message
 import org.springframework.data.jpa.repository.Lock
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -25,8 +27,8 @@ interface UserRepository : CrudRepository<User, String> {
 @Service
 @Transactional
 class UserService(
-        private val userRepository: UserRepository
-        //private val postService: PostService
+        private val userRepository: UserRepository,
+        private val messageService: MessageService
 ) {
 
     fun findIdByEager(userId: String): User? {
@@ -54,10 +56,27 @@ class UserService(
         return true
     }
 
+    private fun validateMessage(messageId: String) {
+
+        if (!messageService.isInitialized()) {
+            throw IllegalArgumentException("Message service is not initialized")
+        }
+
+        if (!messageService.messageCollection.any { it.messageId == messageId }) {
+            throw java.lang.IllegalArgumentException("Invalid message Id: $messageId")
+        }
+
+    }
+
     private fun validateUser(userId: String) {
         if (!userRepository.existsById(userId)) {
             throw IllegalArgumentException("User $userId does not exist")
         }
+    }
+
+    private fun validate(userId: String, messageId: String) {
+        validateUser(userId)
+        validateMessage(messageId)
     }
 
     fun acceptFriendship(userId: String, friendId: String, status: Int) {

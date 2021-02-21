@@ -2,7 +2,7 @@ spring:
   application:
     name: messages-service
   datasource:
-    url: "jdbc:postgresql://postgres-trips:5432/postgres"
+    url: "jdbc:postgresql://postgres-messages:5432/postgres"
     username: "postgres"
     password: ""
     driver-class-name: org.postgresql.Driver

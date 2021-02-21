@@ -2,10 +2,8 @@ package no.enterprise2.contexam.usercollections.db
 
 
 import no.enterprise2.contexam.messages.dto.MessageDto
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import no.enterprise2.contexam.usercollections.model.Message
+import javax.persistence.*
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
@@ -34,8 +32,6 @@ class Friendship(
 
         @get:Max(1)
         var status: Int = 1
-
-
 )
 
 

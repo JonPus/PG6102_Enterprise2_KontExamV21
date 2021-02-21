@@ -39,8 +39,7 @@ class FriendshipService(
 
             val friendship = Friendship()
             friendship.friendId = friendId
-            friendship.user1 = user1
-            friendship.user2 = user2
+
 
             return true
         } else {
