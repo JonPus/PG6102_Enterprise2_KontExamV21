@@ -51,7 +51,7 @@ class WebSecurityConfig(
 
                 .authorizeRequests()
                 .antMatchers("/api/auth/user").authenticated()
-                .antMatchers("/api/auth/signUp").permitAll()
+                .antMatchers("/api/auth/signup").permitAll()
                 .antMatchers("/api/auth/login").permitAll()
                 .antMatchers("/api/auth/logout").permitAll()
                 .anyRequest().denyAll()

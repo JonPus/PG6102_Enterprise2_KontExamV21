@@ -39,7 +39,7 @@ class RestAPI(
     }
 
     @PostMapping(
-            path = ["/signUp"],
+            path = ["/signup"],
             consumes = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun signUp(@RequestBody dto: AuthDto)

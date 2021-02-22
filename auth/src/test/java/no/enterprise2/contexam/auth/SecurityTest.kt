@@ -83,7 +83,7 @@ class SecurityTest {
 
         val sessionCookie = RestAssured.given().contentType(ContentType.JSON)
                 .body(AuthDto(id, password))
-                .post("/signUp")
+                .post("/signup")
                 .then()
                 .statusCode(201)
                 .header("Set-Cookie", CoreMatchers.not(CoreMatchers.equalTo(null)))

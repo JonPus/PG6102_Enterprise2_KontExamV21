@@ -30,10 +30,4 @@ object FakeData {
         }
         return dto
     }
-
-    /*put(POST, 1)
-            put(MESSAGE, 2)
-            put(PRIVATE_MESSAGE, 3)
-            put(PUBLIC_MESSAGE, 4)*/
-
 }

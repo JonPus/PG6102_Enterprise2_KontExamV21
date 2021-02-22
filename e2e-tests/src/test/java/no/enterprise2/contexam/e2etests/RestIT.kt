@@ -1,10 +1,15 @@
 package no.enterprise2.contexam.e2etests
 
 import io.restassured.RestAssured
+import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import no.enterprise2.contexam.e2etests.dto.Command
+import no.enterprise2.contexam.e2etests.dto.PatchUserDto
+import no.enterprise2.contexam.messages.dto.MessageDto
 import org.awaitility.Awaitility
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -53,7 +58,7 @@ class RestIT {
                     .ignoreExceptions()
                     .until {
 
-                        RestAssured.given().baseUri("http://${env.getServiceHost("discovery", 8500)}")
+                        given().baseUri("http://${env.getServiceHost("discovery", 8500)}")
                                 .port(env.getServicePort("discovery", 8500))
                                 .get("/v1/agent/services")
                                 .then()
@@ -65,9 +70,85 @@ class RestIT {
     }
 
     @Test
+    fun testAMQPRabbitSocial() {
+
+        Awaitility.await().atMost(60, TimeUnit.SECONDS)
+                .pollInterval(Duration.ofSeconds(10))
+                .ignoreExceptions()
+                .until {
+
+                    //Login User with Admin
+
+                    val adminUser = "adminAMQP"
+                    val adminPass = "admin"
+
+                    val cookieAdmin = given().contentType(ContentType.JSON)
+                            .body(
+                                    """
+                                {
+                                    "userId": "$adminUser",
+                                    "password": "$adminPass"
+                                }
+                            """.trimIndent()
+                            )
+                            .post("/api/auth/login")
+                            .then()
+                            .statusCode(204)
+                            .header("Set-Cookie", CoreMatchers.not(CoreMatchers.equalTo(null)))
+                            .extract().cookie("SESSION")
+
+                    //Create Friend
+
+                    val friendId = "foo_testCreateUser_" + System.currentTimeMillis()
+                    val friendPassword = "friend"
+
+                    val friendCookie = given().contentType(ContentType.JSON)
+                            .body(
+                                    """
+                                {
+                                    "userId": "$friendId",
+                                    "password": "$friendPassword"
+                                }
+                            """.trimIndent()
+                            )
+                            .post("/api/auth/signup")
+                            .then()
+                            .statusCode(201)
+                            .header("Set-Cookie", CoreMatchers.not(CoreMatchers.equalTo(null)))
+                            .extract().cookie("SESSION")
+
+                    //Create Message/POST
+
+                    val messageId = "m001" + System.currentTimeMillis()
+                    val message = "Silence treatment"
+                    val uniqueNumber = 1
+
+                    val newMessage = given().cookie("SESSION", cookieAdmin).contentType(ContentType.JSON)
+                            .body(
+                                    MessageDto(messageId, message, adminUser, friendId, uniqueNumber)
+                            )
+                            .put("/api/messages/$messageId")
+                            .then()
+                            .statusCode(201)
+
+                    val createdMessage = given().cookie("SESSION", cookieAdmin).contentType(ContentType.JSON)
+                            .get("/api/messages/$messageId")
+                            .then()
+                            .statusCode(200)
+                            .body(CoreMatchers.containsString(messageId))
+                            .body(CoreMatchers.containsString(message))
+                            .body(CoreMatchers.containsString(adminUser))
+                            .body(CoreMatchers.containsString(friendId))
+
+                    true
+                }
+
+    }
+
+    @Test
     fun testUnauthorizedAccess() {
 
-        RestAssured.given().get("/api/auth/user")
+        given().get("/api/auth/user")
                 .then()
                 .statusCode(401)
     }
@@ -79,7 +160,7 @@ class RestIT {
                 .pollInterval(Duration.ofSeconds(10))
                 .ignoreExceptions()
                 .until {
-                    RestAssured.given().get("/api/messages/collection_v1_000")
+                    given().get("/api/messages/collection_v1_000")
                             .then()
                             .statusCode(200)
                             .body("data.messages.size", Matchers.greaterThan(9))
@@ -96,13 +177,13 @@ class RestIT {
 
                     val id = "foo_testCreateUser_" + System.currentTimeMillis()
 
-                    RestAssured.given().get("/api/user-collections/$id")
+                    given().get("/api/user-collections/$id")
                             .then()
                             .statusCode(401)
 
                     val password = "123456"
 
-                    val cookie = RestAssured.given().contentType(ContentType.JSON)
+                    val cookie = given().contentType(ContentType.JSON)
                             .body(
                                     """
                                 {
@@ -111,16 +192,16 @@ class RestIT {
                                 }
                             """.trimIndent()
                             )
-                            .post("/api/auth/signUp")
+                            .post("/api/auth/signup")
                             .then()
                             .statusCode(201)
                             .header("Set-Cookie", CoreMatchers.not(CoreMatchers.equalTo(null)))
                             .extract().cookie("SESSION")
 
-                    RestAssured.given().cookie("SESSION", cookie)
+                    given().cookie("SESSION", cookie)
                             .put("/api/user-collections/$id")
 
-                    RestAssured.given().cookie("SESSION", cookie)
+                    given().cookie("SESSION", cookie)
                             .get("/api/user-collections/$id")
                             .then()
                             .statusCode(200)
@@ -135,11 +216,11 @@ class RestIT {
         val alice = "alice_testUserCollectionAccessControl_" + System.currentTimeMillis()
         val eve = "eve_testUserCollectionAccessControl_" + System.currentTimeMillis()
 
-        RestAssured.given().get("/api/user-collections/$alice").then().statusCode(401)
-        RestAssured.given().put("/api/user-collections/$alice").then().statusCode(401)
-        RestAssured.given().patch("/api/user-collections/$alice").then().statusCode(401)
+        given().get("/api/user-collections/$alice").then().statusCode(401)
+        given().put("/api/user-collections/$alice").then().statusCode(401)
+        given().patch("/api/user-collections/$alice").then().statusCode(401)
 
-        val cookie = RestAssured.given().contentType(ContentType.JSON)
+        val cookie = given().contentType(ContentType.JSON)
                 .body(
                         """
                                 {
@@ -148,14 +229,14 @@ class RestIT {
                                 }
                             """.trimIndent()
                 )
-                .post("/api/auth/signUp")
+                .post("/api/auth/signup")
                 .then()
                 .statusCode(201)
                 .header("Set-Cookie", CoreMatchers.not(CoreMatchers.equalTo(null)))
                 .extract().cookie("SESSION")
 
 
-        RestAssured.given().cookie("SESSION", cookie)
+        given().cookie("SESSION", cookie)
                 .get("/api/user-collections/$alice")
                 .then()
                 .statusCode(403)

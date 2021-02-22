@@ -194,7 +194,7 @@ class RestAPITest {
 
         RestAssured.given().auth().basic(userId1, "123")
                 .contentType(ContentType.JSON)
-                .body(PatchUserDto(Command.ADD_FRIENDSHIP, user1, user2, userId2, 1))
+                .body(PatchUserDto(Command.ADD_FRIENDSHIP, userId2, 1))
                 .patch("/$userId1")
                 .then()
                 .statusCode(200)

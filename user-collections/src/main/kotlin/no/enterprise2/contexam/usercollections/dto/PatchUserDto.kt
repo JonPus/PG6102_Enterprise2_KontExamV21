@@ -27,12 +27,6 @@ data class PatchUserDto(
         @get:ApiModelProperty("Command to execute on a user's collection")
         var command: Command? = null,
 
-        @get:ApiModelProperty("Sender of friend request.")
-        var user1: User? = null,
-
-        @get:ApiModelProperty("Receiver of friend request.")
-        var user2: User? = null,
-
         @get:ApiModelProperty("Friend ID to find and add to friend list")
         var friendId: String? = null,
 

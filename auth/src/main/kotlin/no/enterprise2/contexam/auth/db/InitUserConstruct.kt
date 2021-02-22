@@ -15,5 +15,6 @@ class InitUserConstruct(
     @PostConstruct
     fun init() {
         userService.createUser("adminAMQP", "admin", setOf("ADMIN", "USER"))
+        userService.createUser("userAMQP", "user", setOf("USER"))
     }
 }
