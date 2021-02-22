@@ -7,8 +7,6 @@ package no.enterprise2.contexam.usercollections.dto
 
 import io.swagger.annotations.ApiModelProperty
 import no.enterprise2.contexam.usercollections.db.Friendship
-import no.enterprise2.contexam.usercollections.db.User
-import no.enterprise2.contexam.usercollections.model.Message
 
 enum class Command {
 

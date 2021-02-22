@@ -1,3 +1,9 @@
+/*
+*
+* This ahs been taken from Andrea Arcuri's Repository page: https://github.com/arcuri82/testing_security_development_enterprise_systems/blob/master/advanced/exercise-solutions/card-game/part-10/auth/src/main/kotlin/org/tsdes/advanced/exercises/cardgame/auth/db/UserService.kt
+*
+* */
+
 package no.enterprise2.contexam.auth.db
 
 import org.springframework.data.repository.CrudRepository

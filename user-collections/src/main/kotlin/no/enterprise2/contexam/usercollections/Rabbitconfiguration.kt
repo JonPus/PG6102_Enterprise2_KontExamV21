@@ -1,3 +1,8 @@
+/*
+This is from Andrea Arcuri's repository with modifcation:
+https://github.com/arcuri82/testing_security_development_enterprise_systems/blob/master/advanced/amqp/amqp-rest/sender/src/main/kotlin/org/tsdes/advanced/amqp/rest/sender/RabbitConfiguration.kt*/
+
+
 package no.enterprise2.contexam.usercollections
 
 import org.springframework.amqp.core.Binding
