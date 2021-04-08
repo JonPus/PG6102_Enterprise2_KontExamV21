@@ -1,5 +1,7 @@
 # PG6102 ContExam Spring 2021
 
+## Exam Result: Grade B
+
 ## Topic: Social Site Like Facebook
 
 - This is my exam result for the ContExam in PG6102 Enterpriseprogramming in Spring 2021.
